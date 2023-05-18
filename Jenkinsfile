@@ -14,7 +14,13 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to Kubernetes') {
+             steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    sh "kubectl apply -f appDeploy.yaml"
+                }
+        }
     }
 }
-
 
